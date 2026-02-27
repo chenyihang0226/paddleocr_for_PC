@@ -17,7 +17,7 @@ def run_adb_command(command):
     运行 adb 命令并捕获其输出。
     """
     try:
-        result = subprocess.run(['./tools/adb/adb.exe'] + command, capture_output=True, text=True, check=True)
+        result = subprocess.run(['./tools/adb/adb.exe'] + command, encoding="utf-8",capture_output=True, text=True, check=True)
         return result.stdout.strip(), result.returncode
     except subprocess.CalledProcessError as e:
         print(f"执行 adb 命令失败: {e.stderr}")

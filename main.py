@@ -1,3 +1,5 @@
+import json
+
 from paddleocr import PaddleOCR
 from PIL import Image, ImageDraw
 
@@ -75,9 +77,9 @@ external_info = {
             # "保护"
     }
 
-ocr = PaddleOCR(lang="ch") # 通过 lang 参数来使用英文模型
-ocr = PaddleOCR(device="gpu") # 通过 device 参数使得在模型推理时使用 GPU
 ocr = PaddleOCR(
+    lang="ch",
+    device="cpu",
     det_model_dir="./PP-OCRv5_server_det_infer/",
     rec_model_dir="./PP-OCRv5_server_rec_infer/",
     use_doc_orientation_classify=False,
@@ -128,6 +130,12 @@ for res in result:
 print("filtered_rec:")
 for t in filtered_rec:
     print(t)
+
+# 保存匹配结果为 JSON
+json_path = "./filtered_rec.json"
+with open(json_path, "w", encoding="utf-8") as f:
+    json.dump(filtered_rec, f, ensure_ascii=False, indent=2)
+print(f"已保存 JSON 结果: {json_path}")
 
 # 保存框选结果图
 out_path = "./output_matched.jpg"
